@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Em Up", "Add Em Up.csproj", "{70B095DE-0B2F-4CD1-9C04-43CDDC8233FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70B095DE-0B2F-4CD1-9C04-43CDDC8233FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70B095DE-0B2F-4CD1-9C04-43CDDC8233FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70B095DE-0B2F-4CD1-9C04-43CDDC8233FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70B095DE-0B2F-4CD1-9C04-43CDDC8233FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {563053F3-7835-4693-A781-F480756CA423}
+	EndGlobalSection
+EndGlobal

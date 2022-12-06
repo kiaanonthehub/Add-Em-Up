@@ -31,8 +31,10 @@
             string[] rawData = File.ReadAllLines(fileName);
 
             SplitNameAndHand(rawData);
-
         }
+        #endregion
+
+        #region Logic & Data Manipulation 
 
         // organises the data into name and cards in hand 
         public void SplitNameAndHand(string[] data)
@@ -69,22 +71,7 @@
             }
         }
 
-
-        //// splits the single card into face and suit
-        //public void SplitSinglesIntoFaceSuit(string[] sorted)
-        //{
-        //    int faceTotalScore, suitTotalScore;
-
-        //    foreach (var cardInHand in sorted)
-        //    {
-        //        if (cardInHand.Length >= 2)
-        //        {
-        //            faceTotalScore += GetValueOfFace(cardInHand.First());
-        //            suitTotalScore += GetValueOfSuit(cardInHand.Last());
-        //        }
-        //    }
-        //}
-
+        // return the suit value of a single card
         public static int GetValueOfFace(string card)
         {
 
@@ -98,6 +85,7 @@
             return Convert.ToInt32(card);
         }
 
+        // return the suit value of a single card
         public static int GetValueOfSuit(string card)
         {
             foreach (Suit suit in Enum.GetValues(typeof(Suit)))
@@ -111,20 +99,21 @@
             }
             return 0;
         }
-
         #endregion
 
+        #region Declaration
         // variables
         const string inputFilename = "--in abc.txt";
         const string outputFilename = "--out xyz.txt";
 
         // collection
         static List<PlayerHandModel> lstPlayerHand = new List<PlayerHandModel>();
-
+        #endregion
 
 
     }
 
+    #region Models
     public class PlayerHandModel
     {
         public string? Name { get; set; }
@@ -132,5 +121,5 @@
         public int FaceScore { get; set; }
         public int SuitScore { get; set; }
     }
-
+    #endregion
 }

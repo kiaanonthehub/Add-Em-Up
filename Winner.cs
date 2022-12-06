@@ -67,13 +67,16 @@
                 {
                     if (cardInHand.Length >= 2)
                     {
-                        faceTotalScore += GetValueOfFace(cardInHand.First().ToString());
 
                         if (cardInHand.Length == 3)
                         {
                             faceTotalScore += GetValueOfFace(cardInHand.Substring(0, 2));
                         }
+                        else
+                        {
+                        faceTotalScore += GetValueOfFace(cardInHand.First().ToString());
                         suitTotalScore += GetValueOfSuit(cardInHand.Last().ToString());
+                        }
                     }
                 }
 
@@ -158,25 +161,21 @@
                         high.IsHighest = true;
                     }
 
-                    // winner/s will have IsHighest = true
-                    lstWinnersOnly.Where(x => x.IsHighest == true).ToList();
-
-                    if(lstWinnersOnly.Count == 1) 
-                    {
-                        // winner 
-                        WriteToFile(lstWinnersOnly[0].Name + ":" + lstWinnersOnly[0].FaceScore.ToString());
-                    }else if (lstWinnersOnly.Count > 1) 
-                    {
-                        string names = string.Empty;
-
-                        lstWinnersOnly.ForEach(x=> names = x.Name+",");
-                        WriteToFile(names +":"+ lstWinnersOnly[0].SuitScore.ToString());
-                    }
-                    
-                    
-
                 }
+                // winner/s will have IsHighest = true
+                var lstTiedWinners = lstWinnersOnly.Where(x => x.IsHighest == true).ToList();
 
+                if (lstTiedWinners.Count == 1)
+                {
+                    // winner 
+                    WriteToFile(lstTiedWinners[0].Name + ":" + lstTiedWinners[0].FaceScore.ToString());
+                }
+                else if (lstTiedWinners.Count > 1)
+                {
+                    string names = string.Join(",", lstTiedWinners.Select(x => x.Name));
+
+                    WriteToFile(names + ":" + lstTiedWinners[0].SuitScore.ToString());
+                }
             }
         }
         #endregion

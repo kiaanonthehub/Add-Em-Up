@@ -8,4 +8,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="bin\Debug\net6.0\--in abc.txt" />
+    <Content Include="bin\Debug\net6.0\--out xyz.txt" />
+    <Content Include="bin\Debug\net6.0\Add Em Up.deps.json" />
+    <Content Include="bin\Debug\net6.0\Add Em Up.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net6.0\Add Em Up.dll" />
+    <None Include="bin\Debug\net6.0\Add Em Up.exe" />
+    <None Include="bin\Debug\net6.0\Add Em Up.pdb" />
+  </ItemGroup>
+
 </Project>

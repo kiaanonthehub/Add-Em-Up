@@ -76,16 +76,23 @@
         {
             string[] rawData = File.ReadAllLines(fileName);
 
-            // check file formatting error
-            foreach (var line in rawData)
+            if (rawData.Length > 0)
             {
-                if (!line.Contains(':') && !line.Contains(','))
+                // check file formatting error
+                foreach (var line in rawData)
                 {
-                    ErrorOccured();
+                    if (!line.Contains(':') && !line.Contains(','))
+                    {
+                        ErrorOccured();
+                    }
                 }
-            }
 
-            SplitNameAndHand(rawData);
+                SplitNameAndHand(rawData);
+            }
+            else
+            {
+                ErrorOccured(); 
+            }
         }
 
         // generic error method 
@@ -258,7 +265,7 @@
                     string names = string.Join(",", lstTiedWinners.Select(x => x.Name));
 
                     // write winner/s to file
-                    WriteToFile(names + ":" + lstTiedWinners[0].SuitScore.ToString());
+                    WriteToFile(names + ":" + lstTiedWinners[0].FaceScore.ToString());
                 }
             }
         }

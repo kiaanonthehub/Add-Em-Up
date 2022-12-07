@@ -54,6 +54,8 @@
         // method to create a file and populate data 
         public void CreateFileWithData()
         {
+            Console.WriteLine("File created. Please restart application.");
+
             string[] arrPlayerHands = {
             "Name1:AH,3C,8C,2S,JD",
             "Name2:KD,QH,10C,4C,AC",

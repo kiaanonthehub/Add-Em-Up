@@ -1,20 +1,29 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace Add_Em_Up
+﻿namespace Add_Em_Up
 {
-    #region Enums
-    public enum Face
-    {
-        A = 1, J = 11, Q = 12, K = 13
-    }
-
-    public enum Suit
-    {
-        C = 1, D = 2, H = 3, S = 4
-    }
-    #endregion
     public class Winner
     {
+        #region Enums
+        public enum Face
+        {
+            A = 1, J = 11, Q = 12, K = 13
+        }
+
+        public enum Suit
+        {
+            C = 1, D = 2, H = 3, S = 4
+        }
+        #endregion
+
+        #region Model
+        public class PlayerHandModel
+        {
+            public string? Name { get; set; } = string.Empty;
+            public int FaceScore { get; set; } = 0;
+            public int SuitScore { get; set; } = 0;
+            public bool IsHighest { get; set; } = false;
+        }
+        #endregion
+
         #region Declaration
 
         // variables
@@ -24,6 +33,8 @@ namespace Add_Em_Up
         static List<PlayerHandModel> lstPlayerHand = new List<PlayerHandModel>();
 
         #endregion
+
+        #region Constructor
         public Winner()
         {
             // checks if the file exists or not
@@ -36,7 +47,7 @@ namespace Add_Em_Up
 
             FindWinner();
         }
-
+        #endregion
 
         #region File Handling
 
@@ -65,7 +76,24 @@ namespace Add_Em_Up
         {
             string[] rawData = File.ReadAllLines(fileName);
 
+            // check file formatting error
+            foreach (var line in rawData)
+            {
+                if (!line.Contains(':') && !line.Contains(','))
+                {
+                    ErrorOccured();
+                }
+            }
+
             SplitNameAndHand(rawData);
+        }
+
+        // generic error method 
+        public void ErrorOccured()
+        {
+            WriteToFile("ERROR");
+            Console.WriteLine("Invalid Data in Input File");
+            Environment.Exit(0);
         }
 
         #endregion
@@ -82,40 +110,63 @@ namespace Add_Em_Up
                 // split name and cards
                 string[] splitNameAndCards = line.ToString().Split(':');
 
-                // split hand of cards into singles , trim spaces and convert all text to upper caps
-                string[] splitHandIntoSingles = splitNameAndCards[1].Trim().ToUpper().Split(',').ToArray();
-
-                // iterate through array of singles to calculate summation of each face and suit value
-                foreach (var cardInHand in splitHandIntoSingles)
+                try
                 {
-                    if (cardInHand.Length >= 2)
+                    // split hand of cards into singles , trim spaces and convert all text to upper caps
+                    string[] splitHandIntoSingles = splitNameAndCards[1].Trim().ToUpper().Split(',').ToArray();
+                    // iterate through array of singles to calculate summation of each face and suit value
+                    foreach (var cardInHand in splitHandIntoSingles)
                     {
-                        // accomodate for 2 digit face value cards e.g 10
-                        if (cardInHand.Length == 3)
+                        if (cardInHand.Length >= 2)
                         {
-                            faceTotalScore += GetValueOfFace(cardInHand.Substring(0, 2));
-                        }
-                        else
-                        {
-                            faceTotalScore += GetValueOfFace(cardInHand.First().ToString());
-                            suitTotalScore += GetValueOfSuit(cardInHand.Last().ToString());
+                            // accomodate for 2 digit face value cards e.g 10
+                            if (cardInHand.Length == 3)
+                            {
+                                faceTotalScore += GetValueOfFace(cardInHand.Substring(0, 2));
+                            }
+                            else
+                            {
+                                faceTotalScore += GetValueOfFace(cardInHand.First().ToString());
+                                suitTotalScore += GetValueOfSuit(cardInHand.Last().ToString());
+                            }
                         }
                     }
-                }
 
-                // append to List<T>
-                lstPlayerHand.Add(new PlayerHandModel
+                    // append to List<T>
+                    lstPlayerHand.Add(new PlayerHandModel
+                    {
+                        Name = splitNameAndCards[0].Trim(),
+                        FaceScore = faceTotalScore,
+                        SuitScore = suitTotalScore
+                    });
+                }
+                catch (System.IndexOutOfRangeException)
                 {
-                    Name = splitNameAndCards[0],
-                    FaceScore = faceTotalScore,
-                    SuitScore = suitTotalScore
-                });
+                    ErrorOccured();
+                }
             }
         }
 
         // return the suit value of a single card
         public int GetValueOfFace(string card)
         {
+            int val;
+
+            char[] invalidFaceValue = "BCDEFGHILMNOPRSTUVWXYZ".ToCharArray();
+
+            // error handling  - checking incorrect formatted inputs in file
+            foreach (var alpha in invalidFaceValue)
+            {
+                if (card.Equals(alpha.ToString()))
+                {
+                    ErrorOccured();
+                }
+                else if (int.TryParse(card, out val) && (val > 10 || val < 2))
+                {
+                    ErrorOccured();
+                }
+            }
+
             foreach (Face face in Enum.GetValues(typeof(Face)))
             {
                 if (card.Equals(face.ToString()))
@@ -129,6 +180,17 @@ namespace Add_Em_Up
         // return the suit value of a single card
         public int GetValueOfSuit(string card)
         {
+            char[] invalidSuitValue = "ABEFGIJKLMNOPQRTUVWXYZ".ToCharArray();
+
+            // error handling  - checking incorrect formatted inputs in file
+            foreach (var alpha in invalidSuitValue)
+            {
+                if (card.Equals(alpha.ToString()))
+                {
+                    ErrorOccured();
+                }
+            }
+
             foreach (Suit suit in Enum.GetValues(typeof(Suit)))
             {
                 if (card.Equals(suit.ToString()))
@@ -201,15 +263,8 @@ namespace Add_Em_Up
             }
         }
         #endregion
-    }
 
-    #region Model
-    public class PlayerHandModel
-    {
-        public string? Name { get; set; } = string.Empty;
-        public int FaceScore { get; set; } = 0;
-        public int SuitScore { get; set; } = 0;
-        public bool IsHighest { get; set; } = false;
     }
-    #endregion
 }
+
+/* Author : Kiaan Maharaj - kiaan.maharaj@outlook.com */
